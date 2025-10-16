@@ -1,0 +1,17 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../NTT.srcs/sources_1/new/address_generator.v" \
+"../../../../NTT.srcs/sources_1/new/butterfly_unit.v" \
+"../../../../NTT.srcs/sources_1/new/mod_add.v" \
+"../../../../NTT.srcs/sources_1/new/mod_mul.v" \
+"../../../../NTT.srcs/sources_1/new/mod_sub.v" \
+"../../../../NTT.srcs/sources_1/new/ntt_controller.v" \
+"../../../../NTT.srcs/sources_1/new/simple_ntt_top.v" \
+"../../../../NTT.srcs/sources_1/new/twiddle_rom_full.v" \
+"../../../../NTT.srcs/sim_1/new/tb_ntt_fntt.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

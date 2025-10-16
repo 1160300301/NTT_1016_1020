@@ -1,0 +1,18 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Verilog code/NTT/NTT.srcs/sources_1/new/address_generator.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module address_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Verilog code/NTT/NTT.srcs/sources_1/new/butterfly_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module butterfly_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Verilog code/NTT/NTT.srcs/sources_1/new/mod_add.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mod_add
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Verilog code/NTT/NTT.srcs/sources_1/new/mod_mul.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mod_mul
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Verilog code/NTT/NTT.srcs/sources_1/new/mod_sub.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mod_sub
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Verilog code/NTT/NTT.srcs/sources_1/new/ntt_controller.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ntt_controller
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Verilog code/NTT/NTT.srcs/sources_1/new/simple_ntt_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module simple_ntt_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Verilog code/NTT/NTT.srcs/sources_1/new/twiddle_rom_full.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module twiddle_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Verilog code/NTT/NTT.srcs/sim_1/new/tb_ntt_fntt.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_ntt_fntt
