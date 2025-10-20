@@ -6,23 +6,20 @@ module ntt_controller(
     output reg [7:0] loop_counter,
     output reg [8:0] twiddle_addr,
     output reg done,
-    output [1:0] current_state  // ? ĞÂÔö£º±©Â¶µ±Ç°×´Ì¬
+    output [1:0] current_state
 );
-
-    // ×´Ì¬¶¨Òå
+    // çŠ¶æ€å®šä¹‰
     localparam IDLE  = 2'b00;
     localparam FNTT  = 2'b01;
     localparam INTT  = 2'b10;
-    localparam FLUSH = 2'b11;  // ? ĞÂÔö£ºÁ÷Ë®ÏßÅÅ¿Õ×´Ì¬
+    localparam FLUSH = 2'b11;
     
     reg [1:0] state, next_state;
-    reg [2:0] flush_counter;  // ? ĞÂÔö£ºÅÅ¿Õ¼ÆÊıÆ÷£¨0-6£©
+    reg [2:0] flush_counter;
     
-    assign current_state = state;  // ? Êä³öµ±Ç°×´Ì¬
+    assign current_state = state;
     
-    // ============================================
-    // ×´Ì¬¼Ä´æÆ÷
-    // ============================================
+    // çŠ¶æ€å¯„å­˜å™¨
     always @(posedge clk or posedge rst) begin
         if (rst)
             state <= IDLE;
@@ -30,9 +27,7 @@ module ntt_controller(
             state <= next_state;
     end
     
-    // ============================================
-    // ×´Ì¬×ª»»Âß¼­
-    // ============================================
+    // çŠ¶æ€è½¬æ¢é€»è¾‘
     always @(*) begin
         case (state)
             IDLE: begin
@@ -45,16 +40,15 @@ module ntt_controller(
             end
             
             FNTT, INTT: begin
-                // ? ¼ì²éÊÇ·ñÍê³É×îºóÒ»¸öÊı¾İ¶Ô
                 if (stage == 3'd6 && loop_counter == 8'd127)
-                    next_state = FLUSH;  // ½øÈëÅÅ¿Õ×´Ì¬
+                    next_state = FLUSH;
                 else
                     next_state = state;
             end
             
             FLUSH: begin
-                // ? µÈ´ıÁ÷Ë®ÏßÅÅ¿Õ£¨7¸öÖÜÆÚ£©
-                if (flush_counter >= 3'd6)
+                // ä¿®æ”¹ç‚¹ 1ï¼šç­‰å¾… 8 ä¸ªå‘¨æœŸï¼ˆ0-7ï¼‰ï¼ŒåŸæ¥æ˜¯ 3'd6
+                if (flush_counter >= 3'd7)  // æ”¹è¿™é‡Œï¼š3'd6â†’3'd7
                     next_state = IDLE;
                 else
                     next_state = FLUSH;
@@ -64,9 +58,7 @@ module ntt_controller(
         endcase
     end
     
-    // ============================================
-    // ¼ÆÊıÆ÷ºÍÊä³öÂß¼­
-    // ============================================
+    // è®¡æ•°å™¨å’Œè¾“å‡ºé€»è¾‘
     always @(posedge clk or posedge rst) begin
         if (rst) begin
             stage <= 0;
@@ -89,29 +81,27 @@ module ntt_controller(
                 end
                 
                 FNTT, INTT: begin
-                    // Ã¿¸öÖÜÆÚÍÆ½øloop¼ÆÊıÆ÷
+                    // æ¯ä¸ªå‘¨æœŸæ¨è¿›loopè®¡æ•°å™¨
                     if (loop_counter < 8'd127) begin
                         loop_counter <= loop_counter + 1;
                         twiddle_addr <= twiddle_addr + 1;
                     end 
                     else begin
-                        // Íê³ÉÒ»¸östage
+                        // å®Œæˆä¸€ä¸ªstage
                         loop_counter <= 0;
                         
                         if (stage < 3'd6) begin
                             stage <= stage + 1;
                             twiddle_addr <= twiddle_addr + 1;
                         end
-                        // ·ñÔò»á½øÈëFLUSH×´Ì¬
                     end
                 end
                 
                 FLUSH: begin
-                    // ? µÈ´ıÁ÷Ë®ÏßÅÅ¿Õ
                     flush_counter <= flush_counter + 1;
                     
-                    // ÔÚ×îºóÒ»¸öÖÜÆÚÖÃdone
-                    if (flush_counter == 3'd6)
+                    // ä¿®æ”¹ç‚¹ 2ï¼šåœ¨ç¬¬ 8 ä¸ªå‘¨æœŸï¼ˆè®¡æ•°åˆ° 7ï¼‰ç½® doneï¼ŒåŸæ¥æ˜¯ 3'd6
+                    if (flush_counter == 3'd7)  // æ”¹è¿™é‡Œï¼š3'd6â†’3'd7
                         done <= 1;
                 end
                 
