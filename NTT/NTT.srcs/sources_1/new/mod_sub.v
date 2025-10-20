@@ -7,6 +7,6 @@ module mod_sub(
     wire signed [12:0] diff = a - b;
     wire signed [12:0] diff_add_q = diff + Q;
     
-    // 如果 diff < 0，则加上q
+    
     assign result = (diff[12] == 1) ? diff_add_q[11:0] : diff[11:0];
 endmodule
