@@ -7,6 +7,6 @@ module mod_add(
     wire [12:0] sum = a + b;
     wire [12:0] sum_sub_q = sum - Q;
     
-    // 如果 sum >= q，则减去q
+    
     assign result = (sum_sub_q[12] == 0) ? sum_sub_q[11:0] : sum[11:0];
 endmodule
