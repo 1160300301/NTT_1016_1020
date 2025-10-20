@@ -7,7 +7,7 @@ module twiddle_rom(
 always @(posedge clk) begin 
     case(addr) 
 
-// ========== 正向NTT旋转因子 ==========
+// ========== 姝ｅ悜NTT鏃嬭浆鍥犲瓙 ==========
 
 // Stage 0: 1 twiddles
 9'd  0: data <= 12'h001; //    1 - Stage 0, index 0
@@ -150,7 +150,7 @@ always @(posedge clk) begin
 9'd125: data <= 12'h335; //  821 - Stage 6, index 62
 9'd126: data <= 12'h38e; //  910 - Stage 6, index 63
 
-// ========== 逆NTT旋转因子 ==========
+// ========== 閫哊TT鏃嬭浆鍥犲瓙 ==========
 
 // Stage 6 (inverse): 64 twiddles
 9'd127: data <= 12'h001; //    1 - Inv Stage 6, index 0
@@ -293,7 +293,7 @@ always @(posedge clk) begin
 // Stage 0 (inverse): 1 twiddles
 9'd253: data <= 12'h001; //    1 - Inv Stage 0, index 0
 
-// ========== Psi幂次 (用于PWM) ==========
+// ========== Psi骞傛 (鐢ㄤ簬PWM) ==========
 9'd254: data <= 12'h001; // psi^0
 9'd255: data <= 12'h03e; // psi^1
 9'd256: data <= 12'h203; // psi^2
@@ -423,7 +423,7 @@ always @(posedge clk) begin
 9'd380: data <= 12'h774; // psi^126
 9'd381: data <= 12'h6f5; // psi^127
 
-        default: data <= 12'h001; // 默认返回1 
+        default: data <= 12'h001; // 榛樿杩斿洖1 
     endcase 
 end 
 
