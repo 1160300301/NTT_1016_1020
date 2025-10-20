@@ -9,9 +9,9 @@ module Barret_Reduce(
     
     reg[23:0] Tbr1, Tbr2;
     reg[25:0] tq;
-    reg[24:0] tq_mul_p;  // 25Î»
+    reg[24:0] tq_mul_p;  // 25ä½
     
-    // µÚÒ»ÅÄ
+    // ç¬¬ä¸€æ‹
     always@(posedge clk) begin
         if(reset) begin
             tq <= 26'd0;
@@ -22,7 +22,7 @@ module Barret_Reduce(
         end
     end
     
-    // µÚ¶şÅÄ
+    // ç¬¬äºŒæ‹
     always@(posedge clk) begin
         if(reset) begin
             tq_mul_p <= 25'd0;
@@ -33,15 +33,15 @@ module Barret_Reduce(
         end
     end
     
-    // µÚÈıÅÄ - ¹Ø¼üĞŞ¸Ä£¡
+    // ç¬¬ä¸‰æ‹ 
     wire[24:0] Tbr2_ext;
-    wire signed [25:0] r1_signed;  // ? Ê¹ÓÃÓĞ·ûºÅÊı¼ì²âÏÂÒç
+    wire signed [25:0] r1_signed;  // ä½¿ç”¨æœ‰ç¬¦å·æ•°æ£€æµ‹ä¸‹æº¢
     wire[24:0] r1, r2, r3;
     
     assign Tbr2_ext = {1'b0, Tbr2};
-    assign r1_signed = {1'b0, Tbr2_ext} - {1'b0, tq_mul_p};  // 26Î»ÓĞ·ûºÅ¼õ·¨
+    assign r1_signed = {1'b0, Tbr2_ext} - {1'b0, tq_mul_p};  // 26ä½æœ‰ç¬¦å·å‡æ³•
     
-    // Èç¹û r1_signed < 0£¬ËµÃ÷ q Ì«´óÁË£¬ĞèÒª¼Ó»ØÒ»¸ö p
+    // å¦‚æœ r1_signed < 0ï¼Œè¯´æ˜ q å¤ªå¤§äº†ï¼Œéœ€è¦åŠ å›ä¸€ä¸ª p
     assign r1 = r1_signed[25] ? (r1_signed + P) : r1_signed[24:0];
     assign r2 = (r1 >= P) ? (r1 - P) : r1;
     assign r3 = (r2 >= P) ? (r2 - P) : r2;
@@ -50,7 +50,7 @@ module Barret_Reduce(
         if(reset)
             Rmdr <= 12'd0;
         else
-            Rmdr <= r3[11:0];  // ? ¼ò»¯£º¾­¹ı3´ÎĞŞÕıºóÒ»¶¨ÕıÈ·
+            Rmdr <= r3[11:0];  // ç®€åŒ–ï¼šç»è¿‡3æ¬¡ä¿®æ­£åä¸€å®šæ­£ç¡®
     end
     
 endmodule
