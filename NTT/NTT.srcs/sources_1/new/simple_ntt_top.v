@@ -8,49 +8,53 @@ module simple_ntt_top(
     output [11:0] dout,
     output done
 );
-    // RAMÊµÀı
+    // RAMå®ä¾‹
     reg [11:0] ram [0:255];
     
-    // ¿ØÖÆÆ÷Êä³ö
+    // æ§åˆ¶å™¨è¾“å‡º
     wire [2:0] stage;
     wire [7:0] loop_counter;
     wire [8:0] twiddle_addr;
     
-    // µØÖ·Éú³ÉÆ÷Êä³ö
+    // åœ°å€ç”Ÿæˆå™¨è¾“å‡º
     wire [7:0] addr_a, addr_b;
     
-    // Êı¾İÍ¨Â·
+    // æ•°æ®é€šè·¯
     wire [11:0] data_a, data_b;
     wire [11:0] twiddle_factor;
     wire [11:0] result_even, result_odd;
     
-    // ============================================
-    // ? ¹Ø¼üĞÂÔö£ºµØÖ·ÑÓ³ÙÁ´£¨7¼¶£©
-    // ============================================
-    reg [7:0] addr_a_delay [0:6];
-    reg [7:0] addr_b_delay [0:6];
-    reg write_enable_delay [0:6];
+    // æ§åˆ¶å™¨çŠ¶æ€ä¿¡å·ï¼ˆéœ€è¦æå‰å£°æ˜ï¼‰
+    wire [1:0] ctrl_state;
     
-    // ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚ¼ÆËã×´Ì¬
+    // ============================================
+    // ä¿®æ”¹ç‚¹ 1ï¼šå»¶è¿Ÿé“¾æ”¹ä¸º 8 çº§ï¼ˆåŸæ¥æ˜¯ [0:6]ï¼‰
+    // ============================================
+    reg [7:0] addr_a_delay [0:7];        // æ”¹è¿™é‡Œï¼š6â†’7
+    reg [7:0] addr_b_delay [0:7];        // æ”¹è¿™é‡Œï¼š6â†’7
+    reg write_enable_delay [0:7];        // æ”¹è¿™é‡Œï¼š6â†’7
+    
+    // ç”¨äºåˆ¤æ–­æ˜¯å¦åœ¨è®¡ç®—çŠ¶æ€
     wire computing;
     assign computing = (ctrl_state == 2'b01) || (ctrl_state == 2'b10);
     
     integer i;
     always @(posedge clk or posedge rst) begin
         if (rst) begin
-            for (i = 0; i < 7; i = i + 1) begin
+            // ä¿®æ”¹ç‚¹ 2ï¼šå¾ªç¯ä¸Šç•Œæ”¹ä¸º 8ï¼ˆåŸæ¥æ˜¯ 7ï¼‰
+            for (i = 0; i < 8; i = i + 1) begin  // æ”¹è¿™é‡Œï¼š7â†’8
                 addr_a_delay[i] <= 0;
                 addr_b_delay[i] <= 0;
                 write_enable_delay[i] <= 0;
             end
         end else begin
-            // µÚÒ»¼¶
+            // ç¬¬ä¸€çº§
             addr_a_delay[0] <= addr_a;
             addr_b_delay[0] <= addr_b;
             write_enable_delay[0] <= computing && !din_valid;
             
-            // ºóĞø¼¶Áª
-            for (i = 1; i < 7; i = i + 1) begin
+            // åç»­çº§è” - ä¿®æ”¹å¾ªç¯ä¸Šç•Œ
+            for (i = 1; i < 8; i = i + 1) begin  // æ”¹è¿™é‡Œï¼š7â†’8
                 addr_a_delay[i] <= addr_a_delay[i-1];
                 addr_b_delay[i] <= addr_b_delay[i-1];
                 write_enable_delay[i] <= write_enable_delay[i-1];
@@ -59,26 +63,25 @@ module simple_ntt_top(
     end
     
     // ============================================
-    // RAM¶ÁĞ´Âß¼­
+    // RAMè¯»å†™é€»è¾‘
     // ============================================
-    // ¶ÁÈ¡²Ù×÷Êı£¨µ±Ç°ÖÜÆÚ£©
+    // è¯»å–æ“ä½œæ•°ï¼ˆå½“å‰å‘¨æœŸï¼‰
     assign data_a = ram[addr_a];
     assign data_b = ram[addr_b];
     
-    // ? Ğ´ÈëÊ¹ÓÃÑÓ³ÙºóµÄµØÖ·
+    // ä¿®æ”¹ç‚¹ 3ï¼šä½¿ç”¨ç¬¬ 8 çº§ï¼ˆ[7]ï¼‰å»¶è¿Ÿçš„åœ°å€ï¼ˆåŸæ¥æ˜¯ [6]ï¼‰
     always @(posedge clk) begin
         if (din_valid)
             ram[din_addr] <= din;
-        else if (write_enable_delay[6]) begin
-            ram[addr_a_delay[6]] <= result_even;
-            ram[addr_b_delay[6]] <= result_odd;
+        else if (write_enable_delay[7]) begin      // æ”¹è¿™é‡Œï¼š[6]â†’[7]
+            ram[addr_a_delay[7]] <= result_even;   // æ”¹è¿™é‡Œï¼š[6]â†’[7]
+            ram[addr_b_delay[7]] <= result_odd;    // æ”¹è¿™é‡Œï¼š[6]â†’[7]
         end
     end
     
     // ============================================
-    // Ä£¿éÊµÀı»¯
+    // æ¨¡å—å®ä¾‹åŒ–
     // ============================================
-    wire [1:0] ctrl_state;  // ĞèÒª´Ócontroller±©Â¶×´Ì¬
     
     ntt_controller ctrl(
         .clk(clk),
@@ -89,7 +92,7 @@ module simple_ntt_top(
         .loop_counter(loop_counter),
         .twiddle_addr(twiddle_addr),
         .done(done),
-        .current_state(ctrl_state)  // ? ĞÂÔöÊä³ö
+        .current_state(ctrl_state)
     );
     
     address_generator addr_gen(
@@ -116,7 +119,7 @@ module simple_ntt_top(
         .data(twiddle_factor)
     );
     
-    // Êä³ö
+    // è¾“å‡º
     assign dout = ram[din_addr];
     
 endmodule
