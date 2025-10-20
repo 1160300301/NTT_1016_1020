@@ -3,34 +3,34 @@ module address_generator(
     input [6:0] loop_cnt,
     output reg [7:0] addr_a, addr_b
 );
-    // ¸ù¾İstageºÍloop¼ÆÊıÉú³ÉµûĞÎÔËËãµÄµØÖ·¶Ô
+    // æ ¹æ®stageå’Œloopè®¡æ•°ç”Ÿæˆè¶å½¢è¿ç®—çš„åœ°å€å¯¹
     always @(*) begin
         case (stage)
-            3'd0: begin // ²½³¤=128
+            3'd0: begin // æ­¥é•¿=128
                 addr_a = loop_cnt;
                 addr_b = loop_cnt + 128;
             end
-            3'd1: begin // ²½³¤=64
+            3'd1: begin // æ­¥é•¿=64
                 addr_a = {loop_cnt[6], loop_cnt[5:0]};
                 addr_b = {loop_cnt[6], loop_cnt[5:0]} + 64;
             end
-            3'd2: begin // ²½³¤=32
+            3'd2: begin // æ­¥é•¿=32
                 addr_a = {loop_cnt[6:5], loop_cnt[4:0]};
                 addr_b = {loop_cnt[6:5], loop_cnt[4:0]} + 32;
             end
-            3'd3: begin // ²½³¤=16
+            3'd3: begin // æ­¥é•¿=16
                 addr_a = {loop_cnt[6:4], loop_cnt[3:0]};
                 addr_b = {loop_cnt[6:4], loop_cnt[3:0]} + 16;
             end
-            3'd4: begin // ²½³¤=8
+            3'd4: begin // æ­¥é•¿=8
                 addr_a = {loop_cnt[6:3], loop_cnt[2:0]};
                 addr_b = {loop_cnt[6:3], loop_cnt[2:0]} + 8;
             end
-            3'd5: begin // ²½³¤=4
+            3'd5: begin // æ­¥é•¿=4
                 addr_a = {loop_cnt[6:2], loop_cnt[1:0]};
                 addr_b = {loop_cnt[6:2], loop_cnt[1:0]} + 4;
             end
-            3'd6: begin // ²½³¤=2
+            3'd6: begin // æ­¥é•¿=2
                 addr_a = {loop_cnt[6:1], loop_cnt[0]};
                 addr_b = {loop_cnt[6:1], loop_cnt[0]} + 2;
             end
